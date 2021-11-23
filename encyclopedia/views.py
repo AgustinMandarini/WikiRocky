@@ -13,3 +13,7 @@ def title(request, title):
 	return render(request, "encyclopedia/title.html", {
 		"title": util.get_entry(title), "page_title": title
 	})
+
+def search(request):
+	if request.method == "POST":
+		return render(request, "encyclopedia/search.html")
