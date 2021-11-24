@@ -4,7 +4,7 @@ from . import views
 
 app_name = "encyclopedia"
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("title/<str:title>", views.title, name="title"),
-    path("search", views.search, name="search")
+	path("", views.index, name="index"),
+	path("search", views.search, name="search"),
+    path("<str:title>", views.title, name="title")
 ]

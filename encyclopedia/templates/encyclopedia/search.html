@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Search Results:</h1>
+    {% if q %}
+    	<h1>Your results for "{{ q }}":</h1>
+    	{% for res in result %}
+    		<li><a href="{% url 'encyclopedia:title' res %}">{{ res }}</a></li>
+    	{% endfor %}
+    {% else %}
+    	<h1>You have to type something first!</h1>
+    {% endif %}
 
 {% endblock %}
