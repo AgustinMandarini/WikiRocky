@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>New Page</h1>
+    <h1>{{ templ_name }}</h1>
     	<form action="{% url 'encyclopedia:new_page' %}" method="POST">
     		{% csrf_token %}
     		<div class="form-group">

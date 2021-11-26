@@ -51,13 +51,32 @@ def new_page(request):
 			return HttpResponseRedirect(reverse("encyclopedia:title", args=[page_title]))	
 	else:
 		return render(request, "encyclopedia/new_page.html", {
-			"form":NewPage()
+			"form":NewPage(), "templ_name": "New Page"
 		})
 
-
 def edit_page(request, title):
-	print(request.GET)
-	#title = request.GET["title"]
-	#form = NewPage(util.list_entries()[title])
-	#print(form)
-	return HttpResponse("<h1>OK</h1>")
+	if request.method == "POST":
+		title = request.POST.get("page_title")
+		form = NewPage(request.POST)
+		if form.is_valid():
+			page_title = form.cleaned_data["page_title"]
+			page_content = form.cleaned_data["page_content"]
+			print(request.GET)
+			new_page_path = os.path.join(settings.BASE_DIR, f'entries/{page_title}.md')
+			with open(new_page_path, 'w', encoding="utf-8") as file:
+				file.write(f'#{page_title}\n\n{page_content}')
+			if page_title != title:
+				os.remove(os.path.join(settings.BASE_DIR, f'entries/{title}.md'))
+			return HttpResponseRedirect(reverse("encyclopedia:title", args=[page_title]))
+	else:
+		edit_page_path = os.path.join(settings.BASE_DIR, f'entries/{title}.md')
+		with open(edit_page_path, 'r', encoding="utf-8") as file:
+			title = file.read()
+		page_title = title.split('\n')[0]
+		page_content = title.split('\n')[2]
+
+		form = NewPage({"page_title": page_title, "page_content": page_content})
+
+		return render(request, "encyclopedia/edit_page.html", {
+			"form":form, "templ_name": "Edit Page"
+			})
