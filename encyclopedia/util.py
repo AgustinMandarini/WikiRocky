@@ -63,11 +63,11 @@ def read_file(title):
     with open(edit_page_path, 'r', encoding="utf-8") as file:
         file_content = file.read()
     page_title = title
-    page_content = file_content.split('\n')[0]
+    page_content = file_content
 
     return page_content
 
 def random_title():
-    
+
     n = randint(0, len(list_entries())-1)
     return list_entries()[n]

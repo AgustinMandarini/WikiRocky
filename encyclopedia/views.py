@@ -1,5 +1,5 @@
 import re
-
+import markdown2
 from django import forms
 from django.shortcuts import render 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -29,8 +29,11 @@ def search(request):
 def title(request, title):
 	if util.get_entry(title) == None:
 		return render(request, "encyclopedia/404.html")
+
+	page_content = markdown2.markdown(util.get_entry(title))
+
 	return render(request, "encyclopedia/title.html", {
-		"page_content": util.get_entry(title), "title": title
+		"page_content": page_content, "title": title
 	})
 
 def new_page(request):
